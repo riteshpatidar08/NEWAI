@@ -15,7 +15,7 @@ const {authenticated} = useSelector((state)=>state.auth)
 
   return (
     <nav className="bg-opacity-80 backdrop-blur-md p-4 text-black sticky top-0 z-50">
-      <div className="container mx-auto flex items-center justify-between px-6">
+      <div className="container mx-auto flex items-center justify-between px-2">
       
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
@@ -55,7 +55,10 @@ const {authenticated} = useSelector((state)=>state.auth)
             </Button>
           </Link> </div>}    
  
- {authenticated && <ProfileDropDown/>}
+
+
+ {authenticated && 
+ <ProfileDropDown/>}
        
           <motion.button
             initial={{ opacity: 0, y: -10 }}

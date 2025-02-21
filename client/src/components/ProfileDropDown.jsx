@@ -17,11 +17,11 @@ const dispatch = useDispatch()
 
       <Menu shadow="md" width={150}>
       <Menu.Target>
-          <Avatar/>
+          <Avatar className='cursor-pointer'/>
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>Application</Menu.Label>
+        <Menu.Label>Profile</Menu.Label>
         <Menu.Item >
           Settings
         </Menu.Item>

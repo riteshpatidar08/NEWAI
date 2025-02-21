@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Lock, Eye, EyeOff, Cookie } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Button } from '@mantine/core';
+import { Button, Loader } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 function Login() {
   const [isEyeClick, setIsEyeClick] = useState(false);
-  const { authenticated, preferences } = useSelector((state) => state.auth);
+  const { authenticated, preferences, loading } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function Login() {
       .string()
       .min(1, { message: 'This field has to be filled.' })
       .email('This is not a valid email.'),
-    password: z.string().min(1, { messsage: 'Password is required' }),
+    password: z.string().min(1, { message: "Password is required." })
   });
 
   const {
@@ -40,8 +40,7 @@ function Login() {
     resolver: zodResolver(LoginSchema),
   });
 
-  console.log(register('email'));
-  console.log(errors);
+
 
   const handleEyeClick = () => {
     setIsEyeClick(!isEyeClick);
@@ -75,7 +74,7 @@ function Login() {
           <div className="flex gap-2 relative  border-b border-gray-200 ">
             <Lock className="text-gray-500" size={20} />
             <div onClick={handleEyeClick} className="absolute right-2">
-              {isEyeClick ? <Eye /> : <EyeOff />}
+              {isEyeClick ? <Eye size={16} className='text-gray-500' /> : <EyeOff size={16} className='text-gray-500'/>}
             </div>
 
             <input
@@ -85,9 +84,12 @@ function Login() {
               {...register('password')}
             />
           </div>
+            {errors.password && (
+            <p className="text-sm text-red-500">{errors.password.message}</p>
+          )}
 
           <Button type="submit" fullWidth>
-            Login
+         { loading ? <Loader size={16} color="white" /> : "Login"}
           </Button>
 
           <p className="text-center text-gray-800">
