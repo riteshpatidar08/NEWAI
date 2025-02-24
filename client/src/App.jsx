@@ -10,33 +10,34 @@ import { fetchProduct } from './redux/slice/productSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 // import Homepage from './pages/Homepage';
-const Homepage = lazy(() => 
-  import('./pages/Homepage'));
-
+const Homepage = lazy(() => import('./pages/Homepage'));
+const Profile = lazy(() => import('./pages/Profile'));
 import ProtectedRoutes from './components/ProtectedRoutes';
 import LoadingSpinner from './components/LoadingSpinner';
 import PreferenceProtectRoute from './components/PreferenceProtectRoute';
-console.log(Homepage)
+import Footer from './components/Footer';
+console.log(Homepage);
 function App() {
   return (
     <div>
       <Navbar />
 
       <Toaster />
-      <Suspense fallback={<LoadingSpinner/>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route element={<ProtectedRoutes />}>
-            <Route path="/" element={<Homepage />} />
-            <Route element = {<PreferenceProtectRoute/>}>
-               <Route path="/preferences" element={<Preferences />} />
+            <Route path="/home" element={<Homepage />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route element={<PreferenceProtectRoute />}>
+              <Route path="/preferences" element={<Preferences />} />
             </Route>
-           
           </Route>
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </Suspense>
+      {/* <Footer/> */}
     </div>
   );
 }
@@ -75,3 +76,5 @@ export default App;
 //reducer function =>
 
 //createSlice() =>
+// Get real-time breaking news, AI-powered summaries, and personalized recommendations.
+//         // Stay informed with deep insights, trending stories, and expert analysis—all in one place.

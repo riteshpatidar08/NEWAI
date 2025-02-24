@@ -12,7 +12,9 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 function Login() {
   const [isEyeClick, setIsEyeClick] = useState(false);
-  const { authenticated, preferences, loading } = useSelector((state) => state.auth);
+  const { authenticated, preferences, loading } = useSelector(
+    (state) => state.auth
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function Login() {
       .string()
       .min(1, { message: 'This field has to be filled.' })
       .email('This is not a valid email.'),
-    password: z.string().min(1, { message: "Password is required." })
+    password: z.string().min(1, { message: 'Password is required.' }),
   });
 
   const {
@@ -39,8 +41,6 @@ function Login() {
   } = useForm({
     resolver: zodResolver(LoginSchema),
   });
-
-
 
   const handleEyeClick = () => {
     setIsEyeClick(!isEyeClick);
@@ -59,7 +59,7 @@ function Login() {
       >
         <h1 className="text-center text-2xl font-bold mb-4">Welcome Back</h1>
         <form className="space-y-6 w-full" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex gap-2 items-center border-b border-gray-200  ">
+          <div className="flex gap-2 items-center pb-2  border-b border-gray-200  ">
             <Mail className="text-gray-500 " size={20} />
             <input
               type="email"
@@ -71,10 +71,14 @@ function Login() {
           {errors.email && (
             <p className="text-sm text-red-500">{errors.email.message}</p>
           )}
-          <div className="flex gap-2 relative  border-b border-gray-200 ">
+          <div className="flex gap-2 relative pb-2   border-b border-gray-200 ">
             <Lock className="text-gray-500" size={20} />
             <div onClick={handleEyeClick} className="absolute right-2">
-              {isEyeClick ? <Eye size={16} className='text-gray-500' /> : <EyeOff size={16} className='text-gray-500'/>}
+              {isEyeClick ? (
+                <Eye size={16} className="text-gray-500" />
+              ) : (
+                <EyeOff size={16} className="text-gray-500" />
+              )}
             </div>
 
             <input
@@ -84,12 +88,12 @@ function Login() {
               {...register('password')}
             />
           </div>
-            {errors.password && (
+          {errors.password && (
             <p className="text-sm text-red-500">{errors.password.message}</p>
           )}
 
           <Button type="submit" fullWidth>
-         { loading ? <Loader size={16} color="white" /> : "Login"}
+            {loading ? <Loader size={16} color="white" /> : 'Login'}
           </Button>
 
           <p className="text-center text-gray-800">

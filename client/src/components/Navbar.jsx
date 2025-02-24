@@ -14,7 +14,7 @@ const {authenticated} = useSelector((state)=>state.auth)
   };
 
   return (
-    <nav className="bg-opacity-80 backdrop-blur-md p-4 text-black sticky top-0 z-50">
+    <nav className="bg-opacity-80 bg-white backdrop-blur-md p-4 text-black sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between px-2">
       
         <motion.h1

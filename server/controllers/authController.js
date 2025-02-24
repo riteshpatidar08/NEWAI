@@ -21,7 +21,7 @@ export const login = async (req, res) => {
 
     //last token generation
     const token = jwt.sign(
-      { id: user._id, name: user.name },
+      { id: user._id, name: user.name  , email : user.email},
       'hello_this_string',
       { expiresIn: '1d' }
     );
@@ -29,6 +29,7 @@ export const login = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
+      maxAge : 15 * 24 * 60 
     });
 
     res.status(200).json({
@@ -45,6 +46,7 @@ export const verify = async (req, res) => {
     return res.status(200).json({
       authenticated: true,
       id: req.user.id,
+      email : req.user.email ,
       name: req.user.name,
     });
   }

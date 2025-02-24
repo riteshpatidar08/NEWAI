@@ -5,17 +5,64 @@ import { useForm } from 'react-hook-form';
 import { SignUp } from '../redux/slice/authSlice';
 import { Loader } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 const Register = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
-  const { register, handleSubmit } = useForm();
 
 
-  
+const passwordSchema = z.string().min(8,{message: 'Password should be at least 8 character long' }).superRefine((value,ctx)=>{
+  console.log(value)
+  if(!/[A-Z]/.test(value)){
+     ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Must required at least one uppercase case",
+    });
+  }
+  if(!/[a-z]/.test(value)){
+     ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Must required at least one lowercase case",
+    });
+  }
+  if(!/[0-9]/.test(value)){
+     ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Must required at least one digit",
+    });
+  }
+})
+  const registerSchema = z
+    .object({
+      name: z
+        .string()
+        .min(1, { message: 'Name should contain at least 1 character' }),
+      email: z
+        .string()
+        .min(1, { message: 'This field has to be filled.' })
+        .email('This is not a valid email.'),
+      password: passwordSchema ,
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: 'Password do not match',
+      path: ['confirmPassword'],
+    });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
+
   const onSubmit = (data) => {
     console.log(data);
     dispatch(SignUp(data));
   };
+  console.log(errors.confirmPassword);
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <motion.div
@@ -35,11 +82,13 @@ const Register = () => {
               type="text"
               name="name"
               placeholder="Full Name"
-              required
               className="w-full bg-transparent focus:outline-none border-none"
               {...register('name')}
             />
           </div>
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
 
           <div className="relative flex items-center pb-2 border-b border-gray-300">
             <Mail className="text-gray-400 mr-2" size={20} />
@@ -47,11 +96,13 @@ const Register = () => {
               type="email"
               name="email"
               placeholder="Email Address"
-              required
               {...register('email')}
               className="w-full bg-transparent focus:outline-none border-none"
             />
           </div>
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
 
           <div className="relative flex items-center pb-2 border-b border-gray-300">
             <Lock className="text-gray-400 mr-2" size={20} />
@@ -59,22 +110,28 @@ const Register = () => {
               type="password"
               name="password"
               placeholder="Password"
-              required
               {...register('password')}
               className="w-full bg-transparent focus:outline-none border-none"
             />
           </div>
+          {errors.password && (
+            <p className="text-sm text-red-500">{errors.password.message}</p>
+          )}
           <div className="relative flex items-center pb-2 border-b border-gray-300">
             <Lock className="text-gray-400 mr-2" size={20} />
             <input
               type="password"
               name="confirmPassword"
               placeholder="Confirm Password"
-              required
               {...register('confirmPassword')}
               className="w-full bg-transparent focus:outline-none border-none"
             />
           </div>
+          {errors.confirmPassword && (
+            <p className="text-sm text-red-500">
+              {errors.confirmPassword.message}
+            </p>
+          )}
 
           <Button
             type="submit"
