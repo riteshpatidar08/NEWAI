@@ -1,48 +1,53 @@
-import { Avatar, Button, Container, Text } from '@mantine/core';
-import React from 'react';
-import { Tabs } from '@mantine/core';
-import { Bookmark, Heart, Cog, Bot } from 'lucide-react';
+import { Avatar, Tabs, Text, Button, Container, Card } from '@mantine/core';
 import { getCookie } from '../utils/utils';
 
-function Profile() {
+const Profile = () => {
   return (
-    <Container className="max-w-2xl mx-auto">
-      <div>
-        <Avatar size="xl" />
-        <Text>{getCookie('name')}</Text>
-        <Text>{getCookie('email')}</Text>
-        <Button variant="outline">Edit Profile</Button>
-      </div>
-      <Tabs defaultValue="gallery">
+    <Container className="max-w-2xl mx-auto p-6 bg-white rounded-lg">
+      <Card className="p-6 flex flex-col items-center text-center shadow-md">
+        <Avatar
+          size={100}
+          radius="xl"
+          src="https://via.placeholder.com/100"
+          alt="User Avatar"
+        />
+        <Text className="text-xl font-semibold mt-4">
+          {getCookie('name').toUpperCase()}
+        </Text>
+        <Text className="text-gray-500">{getCookie('email')}</Text>
+        <Button variant="filled" color="blue" className="mt-4">
+          Edit Profile
+        </Button>
+      </Card>
+
+      <Tabs defaultValue="bookmarks" className="mt-6">
         <Tabs.List>
-          <Tabs.Tab
-            value="Bookmarks"
-            leftSection={<Bookmark size={16} color="orange" />}
-          >
-            Bookmarks
-          </Tabs.Tab>
-          <Tabs.Tab
-            value="messages"
-            leftSection={<Heart size={16} color="red" />}
-          >
-            Liked News
-          </Tabs.Tab>
-          <Tabs.Tab value="preferences" leftSection={<Cog size={16} />}>
-            Preferences
-          </Tabs.Tab>
-          <Tabs.Tab value="ai-recommandations" leftSection={<Bot size={16} />}>
-            AI Recommandations
-          </Tabs.Tab>
+          <Tabs.Tab value="bookmarks">📌 Bookmarks</Tabs.Tab>
+          <Tabs.Tab value="liked">❤️ Liked News</Tabs.Tab>
+          <Tabs.Tab value="ai-news">🤖 AI Recommendations</Tabs.Tab>
+          <Tabs.Tab value="preferences">⚙ Preferences</Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="gallery">Gallery tab content</Tabs.Panel>
+        <Tabs.Panel value="bookmarks" className="p-4">
+          <Text className="text-gray-700">No bookmarked articles yet.</Text>
+        </Tabs.Panel>
 
-        <Tabs.Panel value="messages">Messages tab content</Tabs.Panel>
+        <Tabs.Panel value="liked" className="p-4">
+          <Text className="text-gray-700">No liked news articles.</Text>
+        </Tabs.Panel>
 
-        <Tabs.Panel value="settings">Settings tab content</Tabs.Panel>
+        <Tabs.Panel value="ai-news" className="p-4">
+          <Text className="text-gray-700">
+            AI-powered news recommendations will appear here.
+          </Text>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="preferences" className="p-4">
+          <Text className="text-gray-700">No preferences set.</Text>
+        </Tabs.Panel>
       </Tabs>
     </Container>
   );
-}
+};
 
 export default Profile;
