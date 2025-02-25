@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@mantine/core";
 import { Twitter, Facebook, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 
 const Footer = () => {
@@ -35,8 +36,8 @@ const Footer = () => {
           <ul className="space-y-1 text-gray-400">
             <li><a href="/" className="hover:text-white transition duration-300">Home</a></li>
             <li><a href="/news" className="hover:text-white transition duration-300">Latest News</a></li>
-            <li><a href="/about" className="hover:text-white transition duration-300">About</a></li>
-            <li><a href="/contact" className="hover:text-white transition duration-300">Contact</a></li>
+            <li><Link to="/about" className="hover:text-white transition duration-300">About</Link></li>
+            <li><Link to="/contact" className="hover:text-white transition duration-300">Contact</Link></li>
           </ul>
         </motion.div>
 

@@ -5,7 +5,7 @@ function PreferenceProtectRoute() {
     const {preferences} = useSelector((state)=>state.auth)
 
     if(preferences.length > 0){
-        return <Navigate to='/' />
+        return <Navigate to='/home' />
     }
     return <Outlet/>
 }

@@ -3,7 +3,7 @@ import { Sparkles } from 'lucide-react';
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen text-black flex items-center justify-center px-6 text-center overflow-hidden">
+    <section className="relative h-screen  text-black flex items-center justify-center px-6 text-center overflow-hidden">
       <div className="absolute inset-0  opacity-80 blur-3xl" />
 
       <div className="relative z-10 max-w-4xl">
@@ -33,7 +33,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <button className="bg-sky-500 text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-sky-600 transition-transform transform hover:scale-105 flex items-center">
+          <button className="bg-sky-500 cursor-pointer text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-sky-600 transition-transform transform hover:scale-105 flex items-center">
             <Sparkles className="mr-2" size={24} /> Start Exploring
           </button>
         </motion.div>

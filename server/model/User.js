@@ -11,17 +11,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   preferences: [String],
-  bookmarks: [{ String }],
+  bookmarks: [{ Object }],
+  readingHistory: [{ Object }],
 });
 
-const User = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema);
 
-export default User
+export default User;
 //name
 //email
 //password
 //preference
 //bookmark
-
 
 //model => controller => routes => app

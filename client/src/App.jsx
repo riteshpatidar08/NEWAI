@@ -16,6 +16,7 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 import LoadingSpinner from './components/LoadingSpinner';
 import PreferenceProtectRoute from './components/PreferenceProtectRoute';
 import Footer from './components/Footer';
+import About from './pages/AboutPage';
 console.log(Homepage);
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
               <Route path="/preferences" element={<Preferences />} />
             </Route>
           </Route>
-
+<Route path='/about' element={<About/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
