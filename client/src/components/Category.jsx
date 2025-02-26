@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from '@mantine/core';
 import axios from 'axios';
 import { useState } from 'react';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 function Category() {
   const [category, setCategory] = useState('general');
   console.log(category);
@@ -16,18 +16,14 @@ function Category() {
     'Science',
   ];
 
-  const fetchNewsByCategory = async (pageParams = 1) => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/news/${category}`,
-        { params: { page: pageParams } }
-      );
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchNewsByCategory = async ({ pageParam = 1 }) => {
+    const response = await axios.get(
+      `${
+        import.meta.env.VITE_API_URL
+      }/api/news/${category}?page=${pageParam}&pageSize=10`
+    );
+    return response.data;
   };
-
   const { data, hasNextPage, fetchNextPage, status } = useInfiniteQuery({
     queryKey: ['category', category],
     queryFn: fetchNewsByCategory,
@@ -61,22 +57,3 @@ function Category() {
 }
 
 export default Category;
-
-//  <Tabs.Tab
-//             value="Bookmarks"
-//             leftSection={<Bookmark size={16} color="orange" />}
-//           >
-//             Bookmarks
-//           </Tabs.Tab>
-//           <Tabs.Tab
-//             value="messages"
-//             leftSection={<Heart size={16} color="red" />}
-//           >
-//             Liked News
-//           </Tabs.Tab>
-//           <Tabs.Tab value="preferences" leftSection={<Cog size={16} />}>
-//             Preferences
-//           </Tabs.Tab>
-//           <Tabs.Tab value="ai-recommandations" leftSection={<Bot size={16} />}>
-//             AI Recommandations
-//           </Tabs.Tab>
