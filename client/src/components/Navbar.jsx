@@ -25,25 +25,25 @@ function Navbar() {
         >
           NewsAI
         </motion.h1>
-
+{authenticated &&
         <ul className="hidden md:flex space-x-6 absolute left-1/2 -translate-x-1/2">
-          {['Home', 'Categories', 'Channels', 'About'].map((item) => (
+          {[{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: 'Channels', path: '/channels' }, { name: 'About', path: '/about' }].map((item) => (
             <motion.li
               whileHover={{ scale: 1.1 }}
               transition={{ type: 'spring', stiffness: 100 }}
-              key={item}
+              key={item.name}
               className="hover:text-gray-700 text-sm"
             >
               <Link
                 className="text-md font-semibold tracking-wider"
-                to={`/${item.toLowerCase()}`}
+                to={item.path}
               >
-                {item}
+                {item.name}
               </Link>
             </motion.li>
           ))}
         </ul>
-
+}
         <div className="flex items-center space-x-4 ml-auto">
           {authenticated && (
             <div className="flex items-center gap-4">
@@ -96,17 +96,17 @@ function Navbar() {
           className="md:hidden bg-white p-4 shadow-md rounded-lg mx-4 mt-2"
         >
           <ul className="space-y-4 text-center">
-            {['Home', 'Categories', 'Channels', 'About'].map((item) => (
+            {[{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: 'Channels', path: '/channels' }, { name: 'About', path: '/about' }].map((item) => (
               <motion.li
-                key={item}
+                key={item.name}
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 100 }}
               >
                 <Link
-                  to={`/${item.toLowerCase()}`}
+                  to={item.path}
                   className="block hover:text-gray-700"
                 >
-                  {item}
+                  {item.name}
                 </Link>
               </motion.li>
             ))}

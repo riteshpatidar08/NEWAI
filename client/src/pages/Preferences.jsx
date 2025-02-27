@@ -31,10 +31,16 @@ const navigate = useNavigate()
  
   };
 
-  const handleSavePreferences = async() => {
-   await dispatch(setPreferences({preferences : selectedCategory}))
-    navigate('/')
-  }
+const handleSavePreferences = () => {
+  dispatch(setPreferences({ preferences: selectedCategory }))
+    .unwrap()
+    .then(() => {
+      navigate('/');
+    })
+    .catch((error) => {
+      console.error("Error saving preferences:", error);
+    });
+};
   return (
     <Slide>
     <div className="h-screen bg-gray-100 flex flex-col justify-center items-center">

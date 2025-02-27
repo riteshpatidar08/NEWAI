@@ -23,7 +23,7 @@ function Login() {
 
   useEffect(() => {
     if (authenticated && preferences.length > 0) {
-      navigate('/home');
+      navigate('/');
     } else if (authenticated && preferences.length <= 0) {
       navigate('/preferences');
     }

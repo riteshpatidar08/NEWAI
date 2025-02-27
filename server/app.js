@@ -8,6 +8,7 @@ import cors from 'cors';
 import bookmarksRoutes from './routes/bookmarksRoutes.js';
 import readingHistoryRoutes from './routes/readingHistoryRoutes.js';
 import morgan from 'morgan';
+import aiRoutes from './routes/aiRoutes.js';
 const app = express();
 morgan('combined')
 app.use(
@@ -25,7 +26,7 @@ dbConnect();
 app.use('/auth', userRoutes);
 app.use('/api', newRoutes);
 app.use('/api', bookmarksRoutes)
-
+app.use('/api' , aiRoutes)
 app.use('/api',readingHistoryRoutes)
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on the PORT ${process.env.PORT}`);
