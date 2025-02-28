@@ -77,12 +77,14 @@ function Category() {
             </p>
           }
         >
+          <div className='space-y-6'>
           {data?.pages.length >= 0 &&
             data?.pages.map((page, index) =>
               page.news.map((article) => (
                 <ArticleCard article={article} category={category} />
               ))
             )}
+            </div>
         </InfiniteScroll>
       </div>
     </div>
