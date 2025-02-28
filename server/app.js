@@ -42,9 +42,9 @@ const fetchNewsAndStore = async () => {
       );
 
       if (data.articles && data.articles.length > 0) {
-        data.articles.map(async (d) => {
+        for (let d of data.articles) {
           const exist = await News.findOne({ title: d.title });
-         
+
           if (!exist) {
             const newData = await News.create({
               content: d.content,
@@ -53,9 +53,9 @@ const fetchNewsAndStore = async () => {
               description: d.description,
               url: d.url,
               urlToImage: d.urlToImage,
-              category: d.category,
+              category,
               publishedAt: d.publishedAt,
-              country: d.country,
+              country,
               source: {
                 id: d.source.id,
                 name: d.source.name,
@@ -65,7 +65,7 @@ const fetchNewsAndStore = async () => {
           } else {
             console.log(`Already exists ${d.title}`);
           }
-        });
+        }
       } else {
         console.log('no data found');
       }
