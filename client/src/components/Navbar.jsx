@@ -16,7 +16,7 @@ function Navbar() {
 
   return (
     <nav className="bg-opacity-80 bg-white h-14  border-b border-b-gray-200 backdrop-blur-md p-4 text-black sticky top-0 z-50">
-      <div className="container mx-auto h-full flex items-center justify-between px-2 relative">
+      <div className="container mx-auto h-full flex items-center  justify-end px-2 relative">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -25,25 +25,30 @@ function Navbar() {
         >
           NewsAI
         </motion.h1>
-{authenticated &&
-        <ul className="hidden md:flex space-x-6 absolute left-1/2 -translate-x-1/2">
-          {[{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: 'Channels', path: '/channels' }, { name: 'About', path: '/about' }].map((item) => (
-            <motion.li
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: 'spring', stiffness: 100 }}
-              key={item.name}
-              className="hover:text-gray-700 text-sm"
-            >
-              <Link
-                className="text-md font-semibold tracking-wider"
-                to={item.path}
+        {authenticated && (
+          <ul className="hidden md:flex space-x-6 absolute left-1/2 -translate-x-1/2">
+            {[
+              { name: 'Home', path: '/' },
+              { name: 'Categories', path: '/categories' },
+              { name: 'Channels', path: '/channels' },
+              { name: 'About', path: '/about' },
+            ].map((item) => (
+              <motion.li
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: 'spring', stiffness: 100 }}
+                key={item.name}
+                className="hover:text-gray-700 text-sm"
               >
-                {item.name}
-              </Link>
-            </motion.li>
-          ))}
-        </ul>
-}
+                <Link
+                  className="text-md font-semibold tracking-wider"
+                  to={item.path}
+                >
+                  {item.name}
+                </Link>
+              </motion.li>
+            ))}
+          </ul>
+        )}
         <div className="flex items-center space-x-4 ml-auto">
           {authenticated && (
             <div className="flex items-center gap-4">
@@ -96,16 +101,18 @@ function Navbar() {
           className="md:hidden bg-white p-4 shadow-md rounded-lg mx-4 mt-2"
         >
           <ul className="space-y-4 text-center">
-            {[{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: 'Channels', path: '/channels' }, { name: 'About', path: '/about' }].map((item) => (
+            {[
+              { name: 'Home', path: '/' },
+              { name: 'Categories', path: '/categories' },
+              { name: 'Channels', path: '/channels' },
+              { name: 'About', path: '/about' },
+            ].map((item) => (
               <motion.li
                 key={item.name}
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 100 }}
               >
-                <Link
-                  to={item.path}
-                  className="block hover:text-gray-700"
-                >
+                <Link to={item.path} className="block hover:text-gray-700">
                   {item.name}
                 </Link>
               </motion.li>

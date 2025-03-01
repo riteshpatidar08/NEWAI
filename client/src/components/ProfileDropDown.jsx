@@ -27,11 +27,11 @@ function ProfileDropDown() {
           </Link>
           <Menu.Item
             leftSection={<Bookmark size={16} />}
-            onClick={handleSignOut}
+          
           >
             Bookmarks
           </Menu.Item>
-          <Menu.Item leftSection={<Book size={16} />} onClick={handleSignOut}>
+          <Menu.Item leftSection={<Book size={16} />} >
             Reading History
           </Menu.Item>
 

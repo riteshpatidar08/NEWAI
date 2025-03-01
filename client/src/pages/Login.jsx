@@ -6,10 +6,10 @@ import { Button, Loader, Checkbox } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from './../redux/slice/authSlice';
+import { login , signInWithGoogle } from './../redux/slice/authSlice';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
-
+import GoogleIcon from './../components/GoogleIcon'
 function Login() {
   const [isEyeClick, setIsEyeClick] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
@@ -117,6 +117,7 @@ function Login() {
           <Button type="submit" fullWidth>
             {loading ? <Loader size={16} color="white" /> : 'Login'}
           </Button>
+          <Button fullWidth variant="outline" onClick={()=>dispatch(signInWithGoogle())} leftSection={<GoogleIcon/>}>Login with Google</Button>
 
           <p className="text-center text-gray-800">
             Don't have an account?{' '}

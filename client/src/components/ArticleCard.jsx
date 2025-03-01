@@ -44,10 +44,14 @@ const ArticleCard = ({ article, category }) => {
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
-
-
   return (
-    <Card shadow="sm" p="lg" radius="md" withBorder className="flex flex-row gap-6">
+    <Card
+      shadow="sm"
+      p="lg"
+      radius="md"
+      withBorder
+      className="flex flex-row gap-6"
+    >
       {article.urlToImage && (
         <Image
           src={article.urlToImage}
@@ -84,12 +88,10 @@ const ArticleCard = ({ article, category }) => {
             </ActionIcon>
           </Tooltip>
 
-        
-
           <Popover
             opened={opened}
             onChange={setOpened}
-            width={isLoading ? 350 : 500} 
+            width={isLoading ? 350 : 500}
             position="bottom"
             withArrow
             shadow="md"
@@ -120,7 +122,7 @@ const ArticleCard = ({ article, category }) => {
                   <motion.span
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className='text-gray-500'
+                    className="text-gray-500"
                     transition={{ repeat: Infinity, duration: 1.5 }}
                   >
                     Generating...
@@ -140,8 +142,17 @@ const ArticleCard = ({ article, category }) => {
                     </motion.span>
                   ))}
                   <Flex justify="flex-end" mt="sm">
-                    <Tooltip label={copySuccess ? "Copied!" : "Copy summary"} withArrow position="top">
-                      <ActionIcon variant="outline" size="sm" color="blue" onClick={handleCopy}>
+                    <Tooltip
+                      label={copySuccess ? 'Copied!' : 'Copy summary'}
+                      withArrow
+                      position="top"
+                    >
+                      <ActionIcon
+                        variant="outline"
+                        size="sm"
+                        color="blue"
+                        onClick={handleCopy}
+                      >
                         <Copy size={18} />
                       </ActionIcon>
                     </Tooltip>

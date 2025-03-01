@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ArticleCard from './ArticleCard';
+import { Skeleton } from '@mantine/core';
 function Category() {
   const [category, setCategory] = useState('general');
   console.log(category);
@@ -27,35 +28,35 @@ function Category() {
     return response.data;
   };
 
-  const { data, hasNextPage, fetchNextPage, status } = useInfiniteQuery({
-    queryKey: ['category', category],
-    queryFn: fetchNewsByCategory,
-    getNextPageParam: (lastPage) => {
-      // console.log('lastPage: ', lastPage);
+  const { data, hasNextPage, fetchNextPage, status, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['category', category],
+      queryFn: fetchNewsByCategory,
+      getNextPageParam: (lastPage) => {
+        // console.log('lastPage: ', lastPage);
 
-      return lastPage.nextPage;
-    },
-  });
+        return lastPage.nextPage;
+      },
+    });
   console.log(data);
   return (
     <div className="py-12 px-10 max-w-5xl mx-auto">
-      <h1 className="text-center space-y-10 my-6 font-bold text-2xl">
+      <h1 className="text-center space-y-10 my-6 font-bold text-3xl">
         Categories
       </h1>
 
       <Tabs
-        defaultValue="gallery"
+        defaultValue="General"
+        variant="outline"
         onChange={(value) => setCategory(value.toLowerCase())}
       >
-        <Tabs.List>
+        <Tabs.List size={20}>
           {categories.map((cat) => (
-            <Tabs.Tab className="text-gray-200" size="lg" value={cat}>
-              {cat}
-            </Tabs.Tab>
+            <Tabs.Tab value={cat}>{cat}</Tabs.Tab>
           ))}
         </Tabs.List>
       </Tabs>
-      <div className=' mt-14'>
+      <div className=" mt-14">
         <InfiniteScroll
           dataLength={
             data?.pages.length >= 0 &&
@@ -77,14 +78,22 @@ function Category() {
             </p>
           }
         >
-          <div className='space-y-6'>
-          {data?.pages.length >= 0 &&
-            data?.pages.map((page, index) =>
-              page.news.map((article) => (
-                <ArticleCard article={article} category={category} />
-              ))
-            )}
+          {isLoading ? (
+            <div className="space-y-6">
+              <Skeleton height={500} />
+              <Skeleton height={20} />
+              <Skeleton height={30}/>
             </div>
+          ) : (
+            <div className="space-y-6">
+              {data?.pages.length >= 0 &&
+                data?.pages.map((page, index) =>
+                  page.news.map((article) => (
+                    <ArticleCard article={article} category={category} />
+                  ))
+                )}
+            </div>
+          )}
         </InfiniteScroll>
       </div>
     </div>

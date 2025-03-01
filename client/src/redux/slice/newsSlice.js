@@ -7,6 +7,7 @@ loading : false
 }
 
 const id = getCookie('id') ;
+console.log(id)
 
 export const setPreferences = createAsyncThunk('/preferences', async(data, {rejectWithValue})=>{
 try {

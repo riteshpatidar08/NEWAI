@@ -1,11 +1,11 @@
 import puppeteer from 'puppeteer';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
+import dotenv from 'dotenv';
+import NewsSummary from '../model/NewsSummary.js';
+dotenv.config();
 console.log(process.env.GEMINI_API_KEY);
 
-const genAI = new GoogleGenerativeAI(
-  ' AIzaSyAvd3ElL39p1jacJ3q-rg1_UALdNwhgKmo'
-);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const generateSummary = async (content) => {
   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -17,6 +17,14 @@ const generateSummary = async (content) => {
 export const newsSummarize = async (req, res) => {
   const { url } = req.body;
 
+  const exist = await NewsSummary.findOne({ url });
+
+  if (exist) {
+    return res.status(200).json({
+      summary: exist.summary,
+      fullarticle: url,
+    });
+  }
   let browser;
   try {
     browser = await puppeteer.launch({ headless: true });
@@ -31,13 +39,18 @@ export const newsSummarize = async (req, res) => {
         .map((p) => p.innerText)
         .join(' ');
     });
+    await browser.close();
+    const summary = await generateSummary(extractedText);
+    const newSSummary = new NewsSummary({
+      url,
+      summary,
+    });
 
-   const summary = await generateSummary(extractedText) ;
-  
-   res.status(200).json({
-    summary , fullarticle : url
-   })
+    await newSSummary.save();
+
+    res.status(200).json({
+      summary,
+      fullarticle: url,
+    });
   } catch (error) {}
 };
-
-
