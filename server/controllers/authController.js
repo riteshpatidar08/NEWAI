@@ -58,7 +58,7 @@ export const verify = async (req, res) => {
       email: req.user.email,
       name: req.user.name,
     });
-    
+
   } catch (error) {
     console.error('Verification Error:', error);
     res.status(500).json({
@@ -103,28 +103,31 @@ export const register = async (req, res) => {
   }
 };
 
+export const googleLogin = async (req, res) => {
+  try {
+    const { idToken } = req.body;
 
-export const googleLogin = async(req,res) => {
-  try{
-const {idToken} = req.body ;
-// console.log(idToken)
-const decodedToken = await admin.auth().verifyIdToken(idToken) ;
-console.log(decodedToken)
-const user = await User.findOne({email :decodedToken.email})
-
-if(!user){
-const newUser = new User({
-  name : decodedToken.name,
-  email : decodedToken.email,
-  password :"google-auth"
-})
-await newUser.save()
-}
+    if (!idToken) {
+      return res.status(400).json({ message: 'ID token is required' });
+    }
 
 
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    console.log(decodedToken);
+
+    let user = await User.findOne({ email: decodedToken.email });
+
+    if (!user) {
+      user = new User({
+        name: decodedToken.name || 'No Name',
+        email: decodedToken.email,
+        password: 'google-auth',
+      });
+      await user.save();
+    }
 
 
- const token = jwt.sign(
+    const token = jwt.sign(
       { id: user._id, name: user.name, email: user.email },
       process.env.JWT_SECRET || 'hello_this_string',
       { expiresIn: '1d' }
@@ -132,14 +135,20 @@ await newUser.save()
 
     res.cookie('token', token, {
       httpOnly: true,
-      maxAge: 15 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 15 * 24 * 60 * 60 * 1000, 
     });
 
     res.status(200).json({
-      preferences: user.preferences,
+      authenticated: true,
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      preferences: user.preferences || {},
       message: 'Login successful.',
     });
-  }catch(err){
-console.log(err)
+  } catch (err) {
+    console.error('Google Login Error:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-}
+};

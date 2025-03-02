@@ -1,14 +1,14 @@
 import { removeCookie, setCookie } from '../../utils/utils';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {auth,googleAuthProvider} from './../../config/firebase.js' ;
-import {signInWithPopup} from 'firebase/auth'
+import { auth, googleAuthProvider } from './../../config/firebase.js';
+import { signInWithPopup } from 'firebase/auth';
 import { getCookie } from '../../utils/utils';
 import { toast } from 'sonner';
 const initialState = {
   loading: false,
-  authenticated:  getCookie('isAuthenticated') || false,
-  name: getCookie('name' )|| null,
+  authenticated: getCookie('isAuthenticated') || false,
+  name: getCookie('name') || null,
   id: getCookie('id') || null,
   preferences: JSON.parse(localStorage.getItem('preferences')) || [],
 };
@@ -16,7 +16,7 @@ const initialState = {
 export const SignUp = createAsyncThunk(
   '/register',
   async (data, { rejectWithValue }) => {
-    try { 
+    try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/register`,
         data
@@ -48,35 +48,33 @@ export const login = createAsyncThunk(
   }
 );
 
-export const signInWithGoogle = createAsyncThunk('/google-login', async()=>{
-  try{
- const result = await signInWithPopup(auth,googleAuthProvider) ;
-const idToken = await result.user.getIdToken() ;
-console.log(idToken)
-const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/google` ,{idToken})
-  const verifyres = await axios.get(
-        `${import.meta.env.VITE_API_URL}/auth/verify`,
-        { withCredentials: true }
-      );
-    return { ...res.data, ...verifyres.data };
-  }catch(err){
+export const signInWithGoogle = createAsyncThunk('/google-login', async () => {
+  try {
+    const result = await signInWithPopup(auth, googleAuthProvider);
+    const idToken = await result.user.getIdToken();
+    console.log(idToken);
 
-  }
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/auth/google`,
+      { idToken }
+    );
 
-})
+    return res.data;
+  } catch (err) {}
+});
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers : {
-    signOut : function(state){
-      state.authenticated = false ;
-      state.id = null ;
-      state.name = null ;
-      removeCookie('isAuthenticated')
-      removeCookie('name')
-      removeCookie('id')
-    }
+  reducers: {
+    signOut: function (state) {
+      state.authenticated = false;
+      state.id = null;
+      state.name = null;
+      removeCookie('isAuthenticated');
+      removeCookie('name');
+      removeCookie('id');
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -106,18 +104,22 @@ const authSlice = createSlice({
         setCookie('name', action.payload.name);
         setCookie('id', action.payload.id);
         state.preferences = action.payload.preferences;
-        localStorage.setItem('preferences', JSON.stringify(action.payload.preferences))
+        localStorage.setItem(
+          'preferences',
+          JSON.stringify(action.payload.preferences)
+        );
         console.log(action.payload);
         toast.success(action.payload.message);
       })
       .addCase(login.rejected, (state, action) => {
-        console.log(action.payload)
-        toast.error(action.payload.response.data.message)
+        console.log(action.payload);
+        toast.error(action.payload.response.data.message);
         state.loading = false;
-      }).addCase(signInWithGoogle.pending, (state,action)=>{
-          state.loading = true;
-      }).addCase(signInWithGoogle.fulfilled ,(state,action)=>{
-        state.loading = false;
+      })
+      .addCase(signInWithGoogle.pending, (state, action) => {
+        // state.loading = true;
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
         state.authenticated = action.payload.authenticated;
         state.name = action.payload.name;
         state.id = action.payload.id;
@@ -126,12 +128,15 @@ const authSlice = createSlice({
         setCookie('name', action.payload.name);
         setCookie('id', action.payload.id);
         state.preferences = action.payload.preferences;
-        localStorage.setItem('preferences', JSON.stringify(action.payload.preferences))
+        localStorage.setItem(
+          'preferences',
+          JSON.stringify(action.payload.preferences)
+        );
         console.log(action.payload);
         toast.success(action.payload.message);
-      })
+      });
   },
 });
 
 export default authSlice.reducer;
-export const {signOut} = authSlice.actions
+export const { signOut } = authSlice.actions;
