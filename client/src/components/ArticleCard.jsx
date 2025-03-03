@@ -56,6 +56,9 @@ const ArticleCard = ({ article, category }) => {
         <Image
           src={article.urlToImage}
           alt={article.title}
+          h={200}
+          w="auto"
+          fit="contain"
           radius="md"
           className="object-cover"
         />

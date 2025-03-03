@@ -14,6 +14,9 @@ import News from './model/News.js';
 import cron from 'node-cron';
 import admin from 'firebase-admin'
 import serviceAccount from  './key/newsai-7b5ae-firebase-adminsdk-fbsvc-25848f46d2.json'  with { type: "json" } ;
+
+
+
 const app = express();
 morgan('combined');
 app.use(

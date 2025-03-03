@@ -8,7 +8,8 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-4xl">
         <motion.h1
-          className="text-4xl md:text-7xl font-extrabold leading-tight"
+          className="text-4xl md:text-7xl font-[900] leading-tight"
+          style={{ fontFamily: 'PolySans Bulky' }}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -33,8 +34,9 @@ export default function HeroSection() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
         >
-          <button className="bg-sky-500 cursor-pointer text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-sky-600 transition-transform transform hover:scale-105 flex items-center">
-            <Sparkles className="mr-2" size={24} /> Start Exploring
+          <button className="bg-sky-500 cursor-pointer text-white px-8 py-4 text-lg font-semibold rounded-lg hover:bg-sky-600 transition-transform transform hover:scale-105 duration-200 flex items-center">
+            <Sparkles className="mr-2 animate-pulse" size={24} /> Start
+            Exploring
           </button>
         </motion.div>
       </div>

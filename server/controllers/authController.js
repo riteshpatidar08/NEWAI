@@ -1,7 +1,7 @@
 import User from '../model/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import admin from 'firebase-admin'
+import admin from 'firebase-admin';
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,7 +58,6 @@ export const verify = async (req, res) => {
       email: req.user.email,
       name: req.user.name,
     });
-
   } catch (error) {
     console.error('Verification Error:', error);
     res.status(500).json({
@@ -111,7 +110,6 @@ export const googleLogin = async (req, res) => {
       return res.status(400).json({ message: 'ID token is required' });
     }
 
-
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     console.log(decodedToken);
 
@@ -126,7 +124,6 @@ export const googleLogin = async (req, res) => {
       await user.save();
     }
 
-
     const token = jwt.sign(
       { id: user._id, name: user.name, email: user.email },
       process.env.JWT_SECRET || 'hello_this_string',
@@ -136,7 +133,7 @@ export const googleLogin = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 15 * 24 * 60 * 60 * 1000, 
+      maxAge: 15 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
