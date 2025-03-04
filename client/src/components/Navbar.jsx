@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import ProfileDropDown from './ProfileDropDown';
 import LiveSearch from './LiveSearch';
 
-
 function Navbar() {
   const { authenticated } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
@@ -19,8 +18,6 @@ function Navbar() {
   return (
     <nav className="bg-opacity-80 bg-white h-14 border-b border-b-gray-200 backdrop-blur-md p-4 text-black sticky top-0 z-50">
       <div className="container mx-auto h-full flex items-center justify-between px-4 relative">
-        
-      
         <motion.h1
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
@@ -30,10 +27,10 @@ function Navbar() {
           NewsAI
         </motion.h1>
 
-<div className="w-1/3">
-  <LiveSearch/>
-</div>
-       
+        <div className="w-1/3">
+          <LiveSearch />
+        </div>
+
         <div className="flex items-center gap-6">
           {authenticated && (
             <ul className="hidden md:flex space-x-6">
@@ -49,7 +46,10 @@ function Navbar() {
                   key={item.name}
                   className="hover:text-gray-700 text-sm"
                 >
-                  <Link className="text-md font-semibold tracking-wider" to={item.path}>
+                  <Link
+                    className="text-md font-semibold tracking-wider"
+                    to={item.path}
+                  >
                     {item.name}
                   </Link>
                 </motion.li>
@@ -57,7 +57,6 @@ function Navbar() {
             </ul>
           )}
 
-        
           {authenticated ? (
             <div className="flex items-center gap-4">
               <button className="relative text-gray-600 hover:text-gray-800">
@@ -96,7 +95,6 @@ function Navbar() {
         </div>
       </div>
 
-     
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}

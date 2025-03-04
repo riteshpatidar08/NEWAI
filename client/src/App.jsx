@@ -9,6 +9,8 @@ import { Toaster } from 'sonner';
 import '@mantine/core/styles.css';
 import ForgetPassword from './pages/forgetPassword';
 import OpenRoutes from './components/OpenRoutes';
+import News from '../../server/model/News';
+import NewsPage from './pages/NewsPage';
 const Homepage = lazy(() => import('./pages/Homepage'));
 const Profile = lazy(() => import('./pages/Profile'));
 const About = lazy(() => import('./pages/AboutPage'));
@@ -26,6 +28,7 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<Homepage />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path='/news' element={<NewsPage/>}/>
             <Route element={<PreferenceProtectRoute />}>
               <Route path="/preferences" element={<Preferences />} />
             </Route>

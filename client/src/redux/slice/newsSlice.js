@@ -1,18 +1,21 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCookie } from "../../utils/utils";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getCookie } from '../../utils/utils';
+import axios from 'axios';
 
 const initialState = {
   loading: false,
   data: null,
   error: null,
+  news: [],
+  totalPages: 0,
+  totalCount: 0,
+  totalItem: 0,
 };
 
 export const setPreferences = createAsyncThunk(
-  "preferences/setPreferences",
-  async (data , { rejectWithValue }) => {
-  
-    const id = getCookie('id')
+  'preferences/setPreferences',
+  async (data, { rejectWithValue }) => {
+    const id = getCookie('id');
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/preferences/${id}`,
@@ -20,13 +23,30 @@ export const setPreferences = createAsyncThunk(
       );
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
+      return rejectWithValue(error.response?.data || 'Something went wrong');
+    }
+  }
+);
+
+export const fetchAllNews = createAsyncThunk(
+  '/fetchallnews',
+  async ({ currentPage, search }, { rejectWithValue }) => {
+    console.log(search);
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/news?page=${currentPage}&keyword=${search}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Something went wrong');
     }
   }
 );
 
 const newsSlice = createSlice({
-  name: "news",
+  name: 'news',
   initialState,
   extraReducers: (builder) => {
     builder
@@ -41,6 +61,17 @@ const newsSlice = createSlice({
       .addCase(setPreferences.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchAllNews.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchAllNews.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.totalPages = action.payload.totalPages;
+        state.news = action.payload.data;
+        state.totalCount = action.payload.totalCount;
+        state.totalItem = action.payload.length;
+        state.loading = false
       });
   },
 });
