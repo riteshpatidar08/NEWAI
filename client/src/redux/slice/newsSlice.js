@@ -10,6 +10,7 @@ const initialState = {
   totalPages: 0,
   totalCount: 0,
   totalItem: 0,
+  readingHistory : []
 };
 
 export const setPreferences = createAsyncThunk(
@@ -45,6 +46,36 @@ export const fetchAllNews = createAsyncThunk(
   }
 );
 
+export const addReadingHistory = createAsyncThunk(
+  '/reading-history',
+  async (data, { rejectWithValue }) => {
+    const id = getCookie('id');
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/${id}/reading-history`,
+        data
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getReadingHistory = createAsyncThunk(
+  '/getreading-history',
+  async (_, { rejectWithValue }) => {
+    const id = getCookie('id');
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/${id}/reading-history`
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 const newsSlice = createSlice({
   name: 'news',
   initialState,
@@ -71,7 +102,26 @@ const newsSlice = createSlice({
         state.news = action.payload.data;
         state.totalCount = action.payload.totalCount;
         state.totalItem = action.payload.length;
-        state.loading = false
+        state.loading = false;
+      })
+      .addCase(addReadingHistory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addReadingHistory.fulfilled, (state, action) => {
+        console.log(action.payload);
+      })
+      .addCase(addReadingHistory.rejected, (state, action) => {
+        console.log(action.payload);
+      })
+      .addCase(getReadingHistory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getReadingHistory.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.readingHistory = action.payload.data
+      })
+      .addCase(getReadingHistory.rejected, (state, action) => {
+        console.log(action.payload);
       });
   },
 });
