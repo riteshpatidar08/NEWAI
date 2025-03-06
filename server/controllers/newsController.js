@@ -55,7 +55,7 @@ export const fetchNewsByCategory = async (req, res) => {
 
 export const fetchAllNews = async (req, res) => {
   console.log(req.query);
-  const { limit = 10, page=1, keyword } = req.query;
+  const { limit = 20, page=1, keyword } = req.query;
   console.log(keyword)
   const query = keyword
     ? {

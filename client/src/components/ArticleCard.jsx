@@ -13,14 +13,17 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Eye, Bookmark, Sparkles, Copy, Share2 } from 'lucide-react';
-
+import { addBookmarks , removeBookmarks} from '../redux/slice/newsSlice';
+import { useDispatch } from 'react-redux';
 const ArticleCard = ({ article, category }) => {
   const [opened, setOpened] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [summary, setSummary] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
+  const [bookmarks, setBookmarks] = useState(true);
 
+  const dispatch = useDispatch();
   const handleSummarize = async () => {
     setOpened(true);
     setIsLoading(true);
@@ -42,6 +45,27 @@ const ArticleCard = ({ article, category }) => {
     navigator.clipboard.writeText(summary);
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
+  };
+
+  const toogleBookmarks = (n) => {
+    console.log(n)
+    const data = {
+    article : {
+      articleId : n._id ,
+      title : n.title ,
+      source : n.source.name ,
+      url : n.url ,
+      imageUrl : n.urlToImage,
+      publishedAt : n.publishedAt
+    }
+  }
+    if (bookmarks) {
+     dispatch(addBookmarks(data))
+    } else {
+     dispatch(removeBookmarks(n.url))
+    }
+
+    setBookmarks(!bookmarks);
   };
 
   return (
@@ -85,9 +109,9 @@ const ArticleCard = ({ article, category }) => {
             </Text>
           </Flex>
 
-          <Tooltip label="Bookmark this article" withArrow position="top">
-            <ActionIcon variant="outline" size="sm" color="blue">
-              <Bookmark size={18} />
+          <Tooltip label={bookmarks ?   "Bookmark this article": 'Remove Bookmark' } withArrow position="top">
+            <ActionIcon onClick={()=>toogleBookmarks(article)} variant="outline" size="sm" color={bookmarks ? 'blue' : 'red' }>
+              <Bookmark size={18} fill={bookmarks ? 'currentColor' : null} />
             </ActionIcon>
           </Tooltip>
 

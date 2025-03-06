@@ -8,19 +8,23 @@ import {
   Group,
   Badge,
   Divider,
+  Menu,
 } from '@mantine/core';
 import { getCookie } from '../utils/utils';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReadingHistory } from '../redux/slice/newsSlice';
+import { getBookmarks, getReadingHistory } from '../redux/slice/newsSlice';
+import { Delete, DeleteIcon, EllipsisVertical, Trash } from 'lucide-react';
+import List from '../components/List';
 const Profile = () => {
   const [bookmarksCount, setBookmarksCount] = useState(5);
   const [readingHistoryCount, setReadingHistoryCount] = useState(12);
-  const { readingHistory } = useSelector((state) => state.news);
+  const { readingHistory , bookmarks } = useSelector((state) => state.news);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getReadingHistory());
+    dispatch(getBookmarks())
   }, []);
   return (
     <motion.div
@@ -67,7 +71,8 @@ const Profile = () => {
               transition={{ delay: 0.5, duration: 0.4, ease: 'easeOut' }}
             >
               <Badge color="green" size="lg">
-                📖 Reading History: {readingHistory.length > 0 ? readingHistory.length : 0}
+                📖 Reading History:{' '}
+                {readingHistory.length > 0 ? readingHistory.length : 0}
               </Badge>
             </motion.div>
           </Group>
@@ -98,7 +103,7 @@ const Profile = () => {
             </Tabs.List>
 
             <Tabs.Panel value="bookmarks" className="p-4">
-              <Text className="text-gray-700">No bookmarked articles yet.</Text>
+             <List data={bookmarks} />
             </Tabs.Panel>
 
             <Tabs.Panel value="liked" className="p-4">
@@ -115,21 +120,7 @@ const Profile = () => {
               <Text className="text-gray-700">No preferences set.</Text>
             </Tabs.Panel>
             <Tabs.Panel value="reading-history" className="p-4">
-              {readingHistory.length > 0
-                ? readingHistory.map((rh) => (
-                    <>
-                      {' '}
-                      <a
-                        href={rh.url}
-                        className="block p-3 hover:underline transition-all duration-300"
-                        target="_blank"
-                      >
-                        {rh.title}
-                      </a>
-                      <Divider />
-                    </>
-                  ))
-                : null}
+            <List data={readingHistory}/>
             </Tabs.Panel>
           </Tabs>
         </motion.div>

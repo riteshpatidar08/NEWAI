@@ -6,4 +6,4 @@ client/node_modules
 server/node_modules
 
 
-server/keyserver/key/*.json
+server/key/*.json
