@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination, Skeleton, Badge } from '@mantine/core';
 import { TrendingUp, Briefcase, Cpu, Volleyball, Landmark } from 'lucide-react';
-import { fetchAllNews ,addReadingHistory } from '../redux/slice/newsSlice';
+import { fetchAllNews, addReadingHistory } from '../redux/slice/newsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 function NewsPage() {
@@ -29,24 +29,24 @@ function NewsPage() {
   }, [currentPage]);
 
   const handleAddHistory = (n) => {
-  //    articleId: String,
-  // title: String,
-  // source: String,
-  // url: String,
-  // imageUrl: String,
-  // publishedAt: Date,
-  const data = {
-    article : {
-      articleId : n._id ,
-      title : n.title ,
-      source : n.source.name ,
-      url : n.url ,
-      imageUrl : n.urlToImage,
-      publishedAt : n.publishedAt
-    }
-  }
-  dispatch(addReadingHistory(data))
-  }
+    //    articleId: String,
+    // title: String,
+    // source: String,
+    // url: String,
+    // imageUrl: String,
+    // publishedAt: Date,
+    const data = {
+      article: {
+        articleId: n._id,
+        title: n.title,
+        source: n.source.name,
+        url: n.url,
+        imageUrl: n.urlToImage,
+        publishedAt: n.publishedAt,
+      },
+    };
+    dispatch(addReadingHistory(data));
+  };
   return (
     <div className="flex min-h-screen">
       <aside className="w-64 p-6 sticky top-0 h-screen border-l border-gray-100 bg-white">
@@ -69,11 +69,15 @@ function NewsPage() {
         <p className="text-md font-semibold  text-gray-800 mt-2">
           Stay updated with the latest headlines.
         </p>
- 
-  <div>
-    {totalCount > 0 ? <span className='text-gray-800 font-semibold'>Showing {totalCount} Results</span> : null}
-  </div>
-      
+
+        <div>
+          {totalCount > 0 ? (
+            <span className="text-gray-800 font-semibold">
+              Showing {totalCount} Results
+            </span>
+          ) : null}
+        </div>
+
         <input
           type="text"
           placeholder="Search news..."
@@ -94,7 +98,7 @@ function NewsPage() {
                   <div className="flex flex-col flex-1 gap-2">
                     <a
                       href={n.url}
-                      onClick={()=> handleAddHistory(n)}
+                      onClick={() => handleAddHistory(n)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xl text-gray-800 font-semibold hover:underline"

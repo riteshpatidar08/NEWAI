@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Eye, Bookmark, Sparkles, Copy, Share2 } from 'lucide-react';
-import { addBookmarks , removeBookmarks} from '../redux/slice/newsSlice';
+import { addBookmarks, removeBookmarks } from '../redux/slice/newsSlice';
 import { useDispatch } from 'react-redux';
 const ArticleCard = ({ article, category }) => {
   const [opened, setOpened] = useState(false);
@@ -48,21 +48,21 @@ const ArticleCard = ({ article, category }) => {
   };
 
   const toogleBookmarks = (n) => {
-    console.log(n)
+    console.log(n);
     const data = {
-    article : {
-      articleId : n._id ,
-      title : n.title ,
-      source : n.source.name ,
-      url : n.url ,
-      imageUrl : n.urlToImage,
-      publishedAt : n.publishedAt
-    }
-  }
+      article: {
+        articleId: n._id,
+        title: n.title,
+        source: n.source.name,
+        url: n.url,
+        imageUrl: n.urlToImage,
+        publishedAt: n.publishedAt,
+      },
+    };
     if (bookmarks) {
-     dispatch(addBookmarks(data))
+      dispatch(addBookmarks(data));
     } else {
-     dispatch(removeBookmarks(n.url))
+      dispatch(removeBookmarks(n.url));
     }
 
     setBookmarks(!bookmarks);
@@ -109,9 +109,18 @@ const ArticleCard = ({ article, category }) => {
             </Text>
           </Flex>
 
-          <Tooltip label={bookmarks ?   "Bookmark this article": 'Remove Bookmark' } withArrow position="top">
-            <ActionIcon onClick={()=>toogleBookmarks(article)} variant="outline" size="sm" color={bookmarks ? 'blue' : 'red' }>
-              <Bookmark size={18} fill={bookmarks ? 'currentColor' : null} />
+          <Tooltip
+            label={bookmarks ? 'Bookmark this article' : 'Remove Bookmark'}
+            withArrow
+            position="top"
+          >
+            <ActionIcon
+              onClick={() => toogleBookmarks(article)}
+              variant="outline"
+              size="sm"
+              color={bookmarks ? 'blue' : 'red'}
+            >
+              <Bookmark size={18} fill={bookmarks ? null : 'currentColor'} />
             </ActionIcon>
           </Tooltip>
 

@@ -20,11 +20,11 @@ import List from '../components/List';
 const Profile = () => {
   const [bookmarksCount, setBookmarksCount] = useState(5);
   const [readingHistoryCount, setReadingHistoryCount] = useState(12);
-  const { readingHistory , bookmarks } = useSelector((state) => state.news);
+  const { readingHistory, bookmarks } = useSelector((state) => state.news);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getReadingHistory());
-    dispatch(getBookmarks())
+    dispatch(getBookmarks());
   }, []);
   return (
     <motion.div
@@ -61,7 +61,7 @@ const Profile = () => {
               transition={{ delay: 0.4, duration: 0.4, ease: 'easeOut' }}
             >
               <Badge color="blue" size="lg">
-                📌 Bookmarks: {bookmarksCount}
+                📌 Bookmarks: {bookmarks.length}
               </Badge>
             </motion.div>
 
@@ -103,7 +103,7 @@ const Profile = () => {
             </Tabs.List>
 
             <Tabs.Panel value="bookmarks" className="p-4">
-             <List data={bookmarks} />
+              <List data={bookmarks} />
             </Tabs.Panel>
 
             <Tabs.Panel value="liked" className="p-4">
@@ -120,7 +120,7 @@ const Profile = () => {
               <Text className="text-gray-700">No preferences set.</Text>
             </Tabs.Panel>
             <Tabs.Panel value="reading-history" className="p-4">
-            <List data={readingHistory}/>
+              <List data={readingHistory} />
             </Tabs.Panel>
           </Tabs>
         </motion.div>
