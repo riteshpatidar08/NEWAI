@@ -14,6 +14,7 @@ import News from './model/News.js';
 import cron from 'node-cron';
 import admin from 'firebase-admin'
 import serviceAccount from  './key/newsai-7b5ae-firebase-adminsdk-fbsvc-25848f46d2.json'  with { type: "json" } ;
+import { resetState } from '../client/src/redux/slice/newsSlice.js';
 
 
 
@@ -85,6 +86,9 @@ const fetchNewsAndStore = async () => {
 // fetchNewsAndStore();
 cron.schedule('*/15 * * * *', fetchNewsAndStore);
 
+app.get('/', (req,res)=>{
+  res.send('HomePage')
+})
 app.use('/auth', userRoutes);
 app.use('/api', newRoutes);
 app.use('/api', bookmarksRoutes);
